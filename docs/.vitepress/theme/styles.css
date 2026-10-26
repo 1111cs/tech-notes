@@ -1,0 +1,133 @@
+:root {
+  --vp-c-brand-1: #6366f1;
+  --vp-c-brand-2: #4f46e5;
+  --vp-c-brand-3: #4338ca;
+  --vp-c-brand-soft: rgba(99, 102, 241, 0.14);
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #4f46e5 10%, #7c3aed 52%, #0891b2 92%);
+  --vp-home-hero-image-background-image: linear-gradient(135deg, rgba(99, 102, 241, 0.24), rgba(8, 145, 178, 0.2));
+  --vp-home-hero-image-filter: blur(52px);
+  --vp-custom-block-info-border: rgba(99, 102, 241, 0.28);
+  --vp-custom-block-info-bg: rgba(99, 102, 241, 0.08);
+}
+
+.dark {
+  --vp-c-brand-1: #a5b4fc;
+  --vp-c-brand-2: #818cf8;
+  --vp-c-brand-3: #6366f1;
+  --vp-c-brand-soft: rgba(129, 140, 248, 0.16);
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(99, 102, 241, 0.08), transparent 24rem),
+    radial-gradient(circle at 88% 24%, rgba(8, 145, 178, 0.06), transparent 22rem);
+  background-attachment: fixed;
+}
+
+.VPNavBar:not(.has-sidebar):not(.home.top) {
+  background-color: color-mix(in srgb, var(--vp-c-bg) 86%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.VPNavBarTitle .title {
+  letter-spacing: 0.04em;
+  font-weight: 750;
+}
+
+.VPHero {
+  padding-top: 112px !important;
+  padding-bottom: 72px !important;
+}
+
+.VPHero .name,
+.VPHero .text {
+  letter-spacing: -0.025em;
+}
+
+.VPHero .tagline {
+  max-width: 620px;
+  line-height: 1.8;
+}
+
+.VPButton {
+  border-radius: 12px !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.VPButton.brand {
+  border: 0 !important;
+  background: linear-gradient(135deg, #6366f1, #7c3aed) !important;
+  box-shadow: 0 10px 26px rgba(79, 70, 229, 0.22);
+}
+
+.VPButton:hover {
+  transform: translateY(-2px);
+}
+
+.VPFeature {
+  border: 1px solid color-mix(in srgb, var(--vp-c-divider) 70%, transparent) !important;
+  border-radius: 18px !important;
+  background: color-mix(in srgb, var(--vp-c-bg-soft) 88%, transparent) !important;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.VPFeature:hover {
+  transform: translateY(-4px);
+  border-color: var(--vp-c-brand-2) !important;
+  box-shadow: 0 18px 42px rgba(30, 41, 59, 0.09);
+}
+
+.VPFeature .icon {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: 13px;
+  background: var(--vp-c-brand-soft) !important;
+  font-size: 22px;
+}
+
+.vp-doc h1 {
+  background: linear-gradient(110deg, var(--vp-c-text-1), var(--vp-c-brand-1));
+  background-clip: text;
+  color: transparent;
+  letter-spacing: -0.03em;
+}
+
+.vp-doc h2 {
+  border-top: 0;
+  letter-spacing: -0.01em;
+}
+
+.vp-doc div[class*='language-'],
+.vp-doc .custom-block {
+  border-radius: 14px;
+}
+
+.VPSidebar {
+  background-color: color-mix(in srgb, var(--vp-c-bg-alt) 90%, transparent) !important;
+}
+
+@media (max-width: 640px) {
+  .VPHero {
+    padding-top: 72px !important;
+    padding-bottom: 48px !important;
+  }
+
+  .VPHero .name {
+    font-size: 38px !important;
+  }
+
+  .VPHero .text {
+    font-size: 30px !important;
+    line-height: 1.25 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .VPButton,
+  .VPFeature {
+    transition: none;
+  }
+}
