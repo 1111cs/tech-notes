@@ -22,7 +22,9 @@ export default defineConfig({
         {
           text: 'Java',
           items: [
-            { text: '概览', link: '/java/' }
+            { text: '概览', link: '/java/' },
+            { text: 'Java 异常体系', link: '/java/java异常体系' },
+            { text: 'Web 系统全链路', link: '/java/web系统全链路' }
           ]
         }
       ],
@@ -46,7 +48,9 @@ export default defineConfig({
         {
           text: '工具使用',
           items: [
-            { text: '概览', link: '/tools/' }
+            { text: '概览', link: '/tools/' },
+            { text: 'Harness 与 Learn Claude Code', link: '/tools/harness和learn-claude-code项目' },
+            { text: 'WPS 与 Windows 换行', link: '/tools/wps隐藏标记和win命令行换行' }
           ]
         }
       ]
