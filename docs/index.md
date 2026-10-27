@@ -30,6 +30,11 @@ features:
     details: 记录 Redis 的数据结构、常见场景与高性能实践。
     link: /redis/
     linkText: 查看 Redis 笔记
+  - icon: 🧩
+    title: LeetCode 上机题
+    details: 整理 LeetCode 刷题记录、解题思路、复杂度分析与代码实现。
+    link: /leetcode上机题吧/
+    linkText: 查看刷题记录
   - icon: 🧰
     title: 工具使用
     details: 收录 Git、Docker、IDE 与命令行等效率工具的实用指南。

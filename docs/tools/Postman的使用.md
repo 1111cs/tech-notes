@@ -9,7 +9,7 @@ postman的请求设置里，body中有个raw选项；
 
  选中 `raw` 后，旁边会弹出一个下拉菜单。你需要点击那个下拉菜单，选择具体的数据类型，最常用的就是 **JSON**。 
 
-![](C:\Users\陈晓东\Desktop\博客待发\github展示\tech-notes\docs\imags\postman-raw选项.png)
+![Postman raw 选项](../imags/postman-raw选项.png)
 
 如果你选择 `raw` -> `JSON`，Postman 就会自动帮你添加请求头 `Content-Type: application/json`，然后你就可以在下面的编辑框里，直接粘贴最纯粹的 JSON 文本：
 

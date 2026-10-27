@@ -14,6 +14,7 @@ export default defineConfig({
       { text: 'Java', link: '/java/' },
       { text: 'MySQL', link: '/mysql/' },
       { text: 'Redis', link: '/redis/' },
+      { text: 'LeetCode 上机题', link: '/leetcode上机题吧/' },
       { text: '工具使用', link: '/tools/' }
     ],
 
@@ -41,6 +42,15 @@ export default defineConfig({
           text: 'Redis',
           items: [
             { text: '概览', link: '/redis/' }
+          ]
+        }
+      ],
+      '/leetcode上机题吧/': [
+        {
+          text: 'LeetCode 上机题',
+          items: [
+            { text: '概览', link: '/leetcode上机题吧/' },
+            { text: '题解模板', link: '/leetcode上机题吧/题解模板' }
           ]
         }
       ],
