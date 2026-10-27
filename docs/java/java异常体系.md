@@ -87,12 +87,6 @@ catch (NullPointerException e) { ... }
 
 Java 编译器认为这种代码是**不可达代码**，也就是 dead code，所以编译阶段就会报错，提示类似：
 
-编辑
-
-
-
-
-
 ```java
 unreachable catch block
 ```

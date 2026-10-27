@@ -95,17 +95,9 @@ public class UserController {
 | `"success"` | `success`                      | **原样字符串**，Content-Type 通常是 `text/plain`，不是 JSON |
 | `Map`       | `{"code":200,"msg":"ok"}`      | 会被序列化成 JSON                                           |
 
-##   Content-Type 与 HTTP 响应
+##   Content-Type 与HTTP 响应报文
 
-```
-上面的表格说了原样字符串，Content-Type 通常是 text/plain，不是 JSON
-Content-Type是指响应头的一个字段是吗？然后他的格式要求是 text/plain吗？ text/plain是什么意思？
-既然不是json为什么，返回json的值是可以的？
-```
-
-===》
-
-它是 HTTP 响应头（Response Header） 里的一个字段
+ Content-Type这个东西出现在了响应头和请求头中，是指要告诉通讯对方，我的body里面的内容是什么类型 。
 
 一个完整的 HTTP 响应长这样：
 
@@ -146,11 +138,17 @@ Host: www.example.com             <-- 请求头：告诉服务器我要访问哪
 Content-Type: application/json    <-- 请求头：告诉服务器我发的是JSON数据
 User-Agent: Mozilla/5.0 ...       <-- 请求头：我是Chrome浏览器
 Content-Length: 42                <-- 请求头：下面正文的长度
-
+Authorization: Bearer <token>     <-- 请求头（认证用）
+Cookie: session_id=abc123...      <--请求头（状态保持）
+    
+    
 {"username": "admin", "pwd": "123"} <-- 请求体：真正要传输的数据（GET请求通常没有这一行）
 ```
 
-
+- **请求行** = 方法 + 路径 + 协议版本（就这一行）
+- **请求头** = 零个或多个"键: 值"对，每行一个，包括 Host、Content-Type、Authorization、Cookie 等
+- **空行** = 请求头和请求体之间的分隔（必须有一个空行）
+- **请求体** = 只有 POST/PUT/PATCH 等方法才有，GET 请求没有 Body
 
 ### web服务器介绍（如 Nginx、Tomcat）
 
