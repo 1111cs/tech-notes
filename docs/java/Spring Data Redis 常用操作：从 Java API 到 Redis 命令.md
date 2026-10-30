@@ -1,0 +1,511 @@
+# Spring Data Redis 常用操作：从 Java API 到 Redis 命令
+
+## 一、为什么需要学习 Spring Data Redis？
+
+在 Java 后端开发中，我们通常不会直接通过命令行操作 Redis，而是使用 Spring Data Redis 提供的 Java API 完成数据读写。
+
+例如，在 oneCoupon 优惠券项目中，查询优惠券模板时使用了下面的代码：
+
+```
+Map<Object, Object> couponTemplateCacheMap =
+        stringRedisTemplate.opsForHash()
+                .entries(couponTemplateCacheKey);
+```
+
+如果你已经了解 Redis，就知道这段代码是在读取 Hash 数据；但如果还不熟悉 Spring Data Redis，就可能不知道 `stringRedisTemplate`、`opsForHash()` 和 `entries()` 分别是什么，以及它们最终对应什么 Redis 命令。
+
+因此，学习 Redis 的 Java 操作时，建议同时理解三个层次：
+
+1. **Java API：** 业务代码通过什么方法操作 Redis？
+2. **Redis 数据结构与命令：** 数据存储在哪里，底层执行什么操作？
+3. **业务用途：** 为什么要这样操作，解决了什么问题？
+
+掌握这三个层次之后，再阅读缓存、分布式锁和高并发业务代码，就会容易得多。
+
+## 二、RedisTemplate 与 StringRedisTemplate
+
+Spring Data Redis 提供了 `RedisTemplate` 和 `StringRedisTemplate` 等工具类，帮助 Java 程序访问 Redis。
+
+### 1. RedisTemplate
+
+`RedisTemplate` 是一个通用的 Redis 操作模板，可以通过配置不同的序列化器，处理不同类型的 Key 和 Value。
+
+Java 对象不能直接以任意形式存入 Redis。通常需要先进行序列化，将对象转换为适合存储和传输的数据表示；读取时再进行反序列化。
+
+因此，使用 `RedisTemplate` 时，需要注意 Key、Value 以及 Hash 字段和值分别采用什么序列化方式。
+
+### 2. StringRedisTemplate
+
+`StringRedisTemplate` 是 `RedisTemplate` 的常用特化实现，默认采用字符串序列化方式，适合操作以字符串表示的 Key、Value 和 Hash 字段。
+
+例如：
+
+```
+stringRedisTemplate.opsForValue()
+        .set("username", "zhangsan");
+```
+
+从业务角度看，这段代码是在 Redis 中保存一个字符串；从 Redis 数据结构的角度看，它使用的是 String 类型。
+
+### 3. 为什么需要 opsForXxx()？
+
+`StringRedisTemplate` 提供了多个操作入口，用于访问不同的 Redis 数据结构。
+
+| Java API        | 对应的数据结构 | 典型用途           |
+| --------------- | -------------- | ------------------ |
+| `opsForValue()` | String         | 缓存字符串、计数值 |
+| `opsForHash()`  | Hash           | 存储对象的多个字段 |
+| `opsForList()`  | List           | 列表、队列相关操作 |
+| `opsForSet()`   | Set            | 去重、集合运算     |
+| `opsForZSet()`  | ZSET           | 排行榜、按分数排序 |
+
+需要注意，`opsForXxx()` 是 Spring Data Redis 的 Java API，并不是 Redis 原生命令。它们为不同的数据结构提供了更方便的操作入口。
+
+## 三、常用 Redis 操作及其对应命令
+
+下面结合常见 Java 后端开发场景，介绍最常用的 Redis 操作。
+
+### 1. String：保存和读取简单数据
+
+String 是 Redis 最常用的数据类型之一，可以保存字符串、数字等内容。
+
+**写入数据：**
+
+```
+stringRedisTemplate.opsForValue()
+        .set("username", "zhangsan");
+```
+
+对应的 Redis 命令：
+
+```
+SET username zhangsan
+```
+
+**读取数据：**
+
+```
+String username =
+        stringRedisTemplate.opsForValue()
+                .get("username");
+```
+
+对应的 Redis 命令：
+
+```
+GET username
+```
+
+**设置过期时间：**
+
+```
+stringRedisTemplate.opsForValue()
+        .set("verification_code", "123456",
+                5, TimeUnit.MINUTES);
+```
+
+这表示保存验证码，并设置五分钟的有效期。概念上对应：
+
+```
+SET verification_code 123456 EX 300
+```
+
+`EX 300` 表示过期时间为 300 秒。使用带过期时间的 `set()`，可以在设置值的同时指定有效期，避免先写入、再单独设置过期时间所带来的中间状态问题。
+
+### 2. Hash：保存对象的多个字段
+
+Hash 适合保存一个对象的多个字段，例如优惠券模板的名称、状态和优惠金额。
+
+**写入一个字段：**
+
+```
+stringRedisTemplate.opsForHash()
+        .put("coupon:1001", "name", "新人优惠券");
+```
+
+对应命令：
+
+```
+HSET coupon:1001 name "新人优惠券"
+```
+
+**读取一个字段：**
+
+```
+Object name =
+        stringRedisTemplate.opsForHash()
+                .get("coupon:1001", "name");
+```
+
+对应命令：
+
+```
+HGET coupon:1001 name
+```
+
+**读取全部字段：**
+
+```
+Map<Object, Object> coupon =
+        stringRedisTemplate.opsForHash()
+                .entries("coupon:1001");
+```
+
+对应命令：
+
+```
+HGETALL coupon:1001
+```
+
+如果 Redis 中保存了多个字段，`entries()` 会将它们读取为一个 Map。
+
+例如：
+
+```
+HSET coupon:1001 name "新人优惠券" status "ACTIVE"
+```
+
+读取后，Java 得到的 Map 中包含 `name` 和 `status` 两个字段。
+
+**一次写入多个字段：**
+
+```
+Map<String, String> fields = new HashMap<>();
+fields.put("name", "新人优惠券");
+fields.put("status", "ACTIVE");
+
+stringRedisTemplate.opsForHash()
+        .putAll("coupon:1001", fields);
+```
+
+这类操作通常通过 `HSET` 的多字段形式完成。与逐个字段调用 `put()` 相比，`putAll()` 可以减少应用与 Redis 之间的请求次数。
+
+### 3. Key：判断存在、设置过期时间和删除
+
+Redis 中的数据通常通过 Key 定位，因此检查 Key 是否存在、设置过期时间和删除 Key 都是常见操作。
+
+**判断 Key 是否存在：**
+
+```
+Boolean exists =
+        stringRedisTemplate.hasKey("coupon:1001");
+```
+
+对应命令：
+
+```
+EXISTS coupon:1001
+```
+
+如果 Key 存在，Redis 返回存在标记；如果不存在，则返回不存在标记。Java API 使用 `Boolean`，所以在处理结果时需要考虑它可能为 `null` 的情况。
+
+**设置过期时间：**
+
+```
+stringRedisTemplate.expire(
+        "coupon:1001", 30, TimeUnit.MINUTES);
+```
+
+对应命令：
+
+```
+EXPIRE coupon:1001 1800
+```
+
+这里设置的是相对过期时间，即从当前时间起 1800 秒后过期。
+
+**查询剩余过期时间：**
+
+```
+Long ttl =
+        stringRedisTemplate.getExpire("coupon:1001");
+```
+
+对应命令：
+
+```
+TTL coupon:1001
+```
+
+`TTL` 可以帮助我们判断 Key 的剩余有效时间。需要注意，返回值可能为负数，例如 `-1` 表示 Key 存在但没有设置过期时间，`-2` 表示 Key 不存在。
+
+**删除 Key：**
+
+```
+stringRedisTemplate.delete("coupon:1001");
+```
+
+对应命令：
+
+```
+DEL coupon:1001
+```
+
+删除 Key 常用于缓存失效、数据清理等场景。
+
+## 四、结合 oneCoupon：理解正常缓存与空值缓存
+
+掌握了基本 API 之后，我们再回到实际项目。
+
+在 oneCoupon 的优惠券模板查询逻辑中，系统使用两种不同的缓存 Key：一种保存正常的优惠券模板数据，另一种标记某个模板当前不存在或不符合查询条件。
+
+### 1. 查询正常缓存
+
+```
+String couponTemplateCacheKey =
+        String.format(
+                EngineRedisConstant.COUPON_TEMPLATE_KEY,
+                requestParam.getCouponTemplateId()
+        );
+
+Map<Object, Object> couponTemplateCacheMap =
+        stringRedisTemplate.opsForHash()
+                .entries(couponTemplateCacheKey);
+```
+
+这里先通过 `String.format()` 拼接出模板对应的 Key，再调用 `opsForHash().entries()` 读取 Hash 中的所有字段。
+
+如果缓存中存在数据，系统就可以将 Map 转换成 `CouponTemplateQueryRespDTO` 并返回，减少数据库查询。
+
+如果返回的 Map 为空，则表示没有读取到正常缓存，需要继续判断模板是否可能存在，并决定是否查询数据库。
+
+### 2. 检查空值缓存
+
+```
+String couponTemplateIsNullCacheKey =
+        String.format(
+                EngineRedisConstant.COUPON_TEMPLATE_IS_NULL_KEY,
+                requestParam.getCouponTemplateId()
+        );
+
+Boolean hasKeyFlag =
+        stringRedisTemplate.hasKey(
+                couponTemplateIsNullCacheKey
+        );
+
+if (Boolean.TRUE.equals(hasKeyFlag)) {
+    throw new ClientException("优惠券模板不存在");
+}
+```
+
+这里使用 `hasKey()` 判断空值缓存的 Key 是否存在。
+
+当系统第一次查询某个模板，发现数据库中没有符合条件的记录时，可以写入空值缓存，避免后续相同请求不断查询数据库。
+
+例如：
+
+```
+if (couponTemplateDO == null) {
+    stringRedisTemplate.opsForValue()
+            .set(couponTemplateIsNullCacheKey,
+                    "", 30, TimeUnit.MINUTES);
+
+    throw new ClientException("优惠券模板不存在或已过期");
+}
+```
+
+对应的 Redis 操作可以理解为：
+
+```
+SET one-coupon_engine:template_is_null:1001 "" EX 1800
+```
+
+这里存储的空字符串只是占位值，真正重要的是 Key 是否存在。
+
+这种设计称为空值缓存，**主要用于缓解缓存穿透：当某个不存在的模板 ID 被反复请求时，系统可以直接返回，而不必每次都访问 MySQL。**
+
+需要注意，空值缓存有有效期。如果业务允许新建模板或恢复模板，系统还需要考虑空值缓存失效或主动删除的策略，否则可能在缓存有效期内继续返回旧的“不存在”结果。
+
+## 五、如何把 Java 对象转换成 Redis Hash？
+
+在 oneCoupon 中，查询数据库得到的 `CouponTemplateDO` 并不是直接写入 Redis，而是先转换成响应 DTO，再转换为 Map。
+
+```
+CouponTemplateQueryRespDTO actualRespDTO =
+        BeanUtil.toBean(
+                couponTemplateDO,
+                CouponTemplateQueryRespDTO.class
+        );
+
+Map<String, Object> cacheTargetMap =
+        BeanUtil.beanToMap(actualRespDTO, false, true);
+```
+
+这里涉及两个转换过程：
+
+1. `BeanUtil.toBean()`：将数据库实体转换为响应 DTO，避免直接把数据库持久层对象当作缓存接口对象使用。
+2. `BeanUtil.beanToMap()`：将 DTO 的属性转换为 Map，方便把每个属性作为 Redis Hash 的字段保存。
+
+随后，项目将 Map 中的字段值转换为字符串：
+
+```
+Map<String, String> actualCacheTargetMap =
+        cacheTargetMap.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue() != null
+                                ? entry.getValue().toString()
+                                : ""
+                ));
+```
+
+这样做是因为项目使用 `StringRedisTemplate`，Hash 的字段和值通常采用字符串序列化方式。
+
+不过，简单调用 `toString()` 并不适用于所有对象。对于日期、复杂对象、集合等类型，直接转换可能无法在读取时准确恢复原始类型。如果缓存字段涉及复杂数据，应该明确设计序列化和反序列化规则。
+
+## 六、为什么写入 Hash 时还要使用 Lua？
+
+oneCoupon 并没有简单地调用 `putAll()`，而是通过 Lua 脚本同时写入 Hash 字段和设置过期时间。
+
+核心脚本如下：
+
+```
+String luaScript =
+        "redis.call('HMSET', KEYS[1], unpack(ARGV, 1, #ARGV - 1)) "
+        + "redis.call('EXPIREAT', KEYS[1], ARGV[#ARGV])";
+```
+
+理解这段脚本，需要先认识 Redis Lua 脚本中的两个概念：
+
+- `KEYS`：传入脚本的 Redis Key 列表。
+- `ARGV`：传入脚本的其他参数列表。
+
+项目先把 Hash 的字段和值依次放入 `args`，**最后追加优惠券有效结束时间的 Unix 时间戳**。脚本将最后一个参数作为过期时间，其余参数作为 Hash 字段和值。
+
+例如，传入的逻辑参数可以表示为：
+
+```
+KEYS[1] = coupon:1001
+
+ARGV = [
+  "name", "新人优惠券",
+  "status", "ACTIVE",
+  "1790000000"
+]
+```
+
+脚本先执行 Hash 写入，再设置绝对过期时间：
+
+```
+HMSET coupon:1001 name "新人优惠券" status "ACTIVE"
+EXPIREAT coupon:1001 1790000000
+```
+
+这里的 `EXPIREAT` 使用 Unix 时间戳，单位是秒。项目通过：
+
+```
+couponTemplateDO.getValidEndTime().getTime() / 1000
+```
+
+将 Java 的毫秒时间戳转换为秒。
+
+### 为什么要使用 Lua？
+
+如果先写入 Hash，再单独设置过期时间，两次操作之间可能有其他客户端命令执行。使用 Lua 脚本可以将这两步作为一个原子执行单元，避免其他客户端命令在脚本执行过程中插入。
+
+**需要注意，Lua 脚本的原子执行不等于数据库事务的回滚能力：如果脚本在第一步完成后，第二步因错误而失败，Redis 不会自动撤销第一步已经完成的写入。**
+
+另外，`HMSET` 在现代 Redis 中已经被标记为弃用，推荐使用支持多字段参数的 `HSET`。阅读旧项目时要理解原来的写法；编写新代码时可以优先采用更新的命令。
+
+## 七、Redis Key 的命名与过期时间
+
+在实际项目中，Key 的设计同样重要。
+
+例如：
+
+```
+one-coupon_engine:template:1001
+one-coupon_engine:template_is_null:1001
+one-coupon_engine:lock:template:1001
+```
+
+通过前缀，可以大致判断 Key 的用途：
+
+- `template`：优惠券模板正常缓存。
+- `template_is_null`：空值缓存。
+- `lock:template`：缓存重建使用的分布式锁。
+
+项目还可能通过公共 Key 序列化器增加环境前缀，以避免不同环境的 Key 相互冲突。但要注意，这取决于具体客户端和序列化器配置，并不是所有 Redis 操作都会自动经过同一套 Key 处理逻辑。
+
+过期时间也需要结合业务含义设计。例如，优惠券模板的正常缓存可以设置为模板有效结束时间，而空值缓存可以设置为固定的 30 分钟。两者的有效期不同，是因为它们保存的数据含义不同。
+
+## 八、常见注意事项
+
+### 1. Redis 数据结构与 Java API 要对应
+
+使用 `opsForHash()` 就是在操作 Hash；使用 `opsForValue()` 则是在操作 String。不能因为它们都通过 `StringRedisTemplate` 调用，就认为它们使用的是相同的数据结构。
+
+### 2. 缓存数据的序列化方式要明确
+
+如果将复杂对象直接转换成字符串，后续不一定能恢复原始类型。**对于 DTO、日期、枚举和集合等数据，应明确缓存格式。**
+
+### 3. 过期时间要与业务有效期相匹配
+
+如果优惠券已经过期，就不应该继续通过正常缓存返回有效模板。使用 `EXPIREAT` 可以让缓存的有效期与业务结束时间关联，但还需要考虑时间精度、过期时间已在过去等情况。
+
+### 4. Lua 脚本适用于需要原子执行的多步操作
+
+如果两个操作之间不能被其他客户端命令打断，可以考虑 Lua**。但不应该为了简单的单条 Redis 命令而无必要地引入脚本。**
+
+### 5. Key 是否存在不代表业务数据一定有效
+
+空值缓存中的 Key 存在，表示系统在某个时间点记录了查询不到有效模板的结果。它并不能永久证明该模板不存在，因此需要结合过期策略和数据更新逻辑考虑缓存一致性。
+
+## 九、总结
+
+Spring Data Redis 为 Java 开发者提供了更方便的 Redis 操作接口。`opsForValue()`、`opsForHash()` 等方法分别对应不同的数据结构，而 `hasKey()`、`expire()`、`delete()` 等方法则用于处理 Key 的存在性、有效期和删除操作。
+
+学习这些 API 时，不能只记住方法名称，还需要知道它们对应什么 Redis 命令，以及为什么在业务中使用。
+
+通过 oneCoupon 的优惠券模板查询流程，可以看到正常缓存、空值缓存、Hash 写入、过期时间管理和 Lua 原子操作是如何配合的。理解这些基础操作之后，再学习缓存穿透、缓存击穿、分布式锁和高并发库存，就会有更扎实的基础。
+
+### 参考资料
+
+- [Spring Data Redis 官方参考文档](https://docs.spring.io/spring-data/redis/reference/)
+- [Redis 官方命令文档](https://redis.io/docs/latest/commands/)
+- [Redis 官方 Lua 脚本文档](https://redis.io/docs/latest/develop/programmability/eval-intro/)
+
+
+
+
+
+## 个人感悟：
+
+**1、序列化方式**
+
+ stringTemplate是一种序列化的方式，这意味着redis中经他手存进去的数据，都是字符串类型，也就是“”； （ 所以你在 redis-cli 里看到的是明文。 ）
+
+而redis中的数据统一为字符串应该也没什么影响，遇到数字，日期这些特殊的存储，需要反序列化时再用函数去将其转化相应的 形式就可以了。 
+
+**2、key的形式**
+
+Redis 本身没有“表”“文件夹”“数据库 schema”这种概念，所有 key 都是平铺的。 所以 coupon:template:1001 里的冒号，其实是在人为划分层级：
+
+很多 Redis 客户端看到冒号，会自动折叠成树状结构
+
+推荐写法一般是：项目/业务 : 模块/实体 : ID；比如：mall:coupon:template:1001
+
+1）分层之后，排查问题会方便很多。
+
+2）很多 Redis 客户端看到冒号，会自动折叠成树状结构
+
+3）冒号分层是好事，但也不是越多越好。一般建议控制在 3～5 层左右，
+
+Redis 并不因为冒号多就“真的建立目录”，它底层还是把 key 当成一个完整字符串处理。冒号分层只是约定，不是 Redis 的强制机制。
+
+ 另外 Hash 有一个容易踩坑的点：**过期时间只能设在 key 上，不能单独给某个 field 设置过期。** 
+
+**3、添加数据**
+
+ SET username zhangsan 表示添加一个key-value 
+
+hset x x x 表示添加一个hash结构 ；
+
+即：
+
+- **String**：一个 key 对应一个值；
+- **Hash**：一个 key 对应多个 field-value；
+- **List**：一个 key 对应一个有序列表，可重复；
+- **Set**：一个 key 对应一个无序集合，不可重复；
+- **ZSet**：一个 key 对应一个有序集合，每个成员带一个 score；
+- **Geo / Stream / Bitmap / HyperLogLog**：都是特殊场景用的结构。

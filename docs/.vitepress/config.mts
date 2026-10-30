@@ -28,7 +28,12 @@ export default defineConfig({
             { text: 'Java 异常体系', link: '/java/java异常体系' },
             { text: 'Web 系统全链路', link: '/java/web系统全链路' },
             { text: 'Java 线程与线程池', link: '/java/Java 线程与线程池：从 Thread 到 ThreadPoolExecutor' },
-            { text: 'Sort、forEach 与函数式编程', link: '/java/sort+foreach+java函数式编程' }
+            { text: '单线程线程池', link: '/java/Java 并发编程：为什么有了 Thread，还需要单线程线程池？' },
+            { text: 'Sort、forEach 与函数式编程', link: '/java/sort+foreach+java函数式编程' },
+            { text: 'Spring Data Redis 常用操作', link: '/java/Spring Data Redis 常用操作：从 Java API 到 Redis 命令' },
+            { text: 'Redis 分布式锁', link: '/java/Redis 分布式锁：从 SET NX EX 到 Redisson RLock' },
+            { text: 'Redis 布隆过滤器', link: '/java/Redis 布隆过滤器：原理、Redisson 实现与缓存穿透治理' },
+            { text: 'Redis 延迟队列', link: '/java/Redis 不只是缓存：使用 Redisson 实现延迟队列' }
           ]
         }
       ],
