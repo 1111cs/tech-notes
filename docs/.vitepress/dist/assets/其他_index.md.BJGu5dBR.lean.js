@@ -1,0 +1,1 @@
+import{_ as e,o as t,c as r,a2 as i}from"./chunks/framework.DYYBR_aZ.js";const m=JSON.parse('{"title":"其他","description":"","frontmatter":{},"headers":[],"relativePath":"其他/index.md","filePath":"其他/index.md"}'),l={name:"其他/index.md"};function n(o,a,d,s,_,h){return t(),r("div",null,[...a[0]||(a[0]=[i("",4)])])}const f=e(l,[["render",n]]);export{m as __pageData,f as default};

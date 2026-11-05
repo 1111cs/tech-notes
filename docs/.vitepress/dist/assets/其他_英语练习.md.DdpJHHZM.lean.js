@@ -1,0 +1,1 @@
+import{_ as o,o as a,c as e,a2 as r}from"./chunks/framework.DYYBR_aZ.js";const c=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"其他/英语练习.md","filePath":"其他/英语练习.md"}'),d={name:"其他/英语练习.md"};function n(l,t,u,i,s,p){return a(),e("div",null,[...t[0]||(t[0]=[r("",23)])])}const _=o(d,[["render",n]]);export{c as __pageData,_ as default};

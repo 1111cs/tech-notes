@@ -15,7 +15,8 @@ export default defineConfig({
       { text: 'MySQL', link: '/mysql/' },
       { text: 'Redis', link: '/redis/' },
       { text: 'LeetCode 上机题', link: '/leetcode上机题吧/' },
-      { text: '工具使用', link: '/tools/' }
+      { text: '工具使用', link: '/tools/' },
+      { text: '其他', link: '/其他/' }
     ],
 
     sidebar: {
@@ -33,7 +34,10 @@ export default defineConfig({
             { text: 'Spring Data Redis 常用操作', link: '/java/Spring Data Redis 常用操作：从 Java API 到 Redis 命令' },
             { text: 'Redis 分布式锁', link: '/java/Redis 分布式锁：从 SET NX EX 到 Redisson RLock' },
             { text: 'Redis 布隆过滤器', link: '/java/Redis 布隆过滤器：原理、Redisson 实现与缓存穿透治理' },
-            { text: 'Redis 延迟队列', link: '/java/Redis 不只是缓存：使用 Redisson 实现延迟队列' }
+            { text: 'Redis 延迟队列', link: '/java/Redis 不只是缓存：使用 Redisson 实现延迟队列' },
+            { text: 'Redis Lua 脚本', link: '/java/Redis Lua 脚本：从基础语法到 Java 工程实践' },
+            { text: 'RocketMQ 入门与实战', link: '/java/RocketMQ 入门与实战：从消息生产、消费到消费幂等' },
+            { text: 'Swagger、OpenAPI 与 Knife4j', link: '/java/Spring Boot 接口文档实践：Swagger、OpenAPI 与 Knife4j' }
           ]
         }
       ],
@@ -74,6 +78,17 @@ export default defineConfig({
             { text: 'Postman 的使用', link: '/tools/Postman的使用' },
             { text: 'Git 的使用', link: '/tools/git的使用' },
             { text: 'WPS 与 Windows 换行', link: '/tools/wps隐藏标记和win命令行换行' }
+          ]
+        }
+      ],
+      '/其他/': [
+        {
+          text: '其他',
+          items: [
+            { text: '概览', link: '/其他/' },
+            { text: '牛券项目简历', link: '/其他/牛券项目简历' },
+            { text: '英语练习', link: '/其他/英语练习' },
+            { text: '自学是门手艺', link: '/其他/自学是门手艺' }
           ]
         }
       ]

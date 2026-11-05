@@ -1,0 +1,1 @@
+import{_ as s,o,c as e,a2 as r}from"./chunks/framework.DYYBR_aZ.js";const c=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"其他/牛券项目简历.md","filePath":"其他/牛券项目简历.md"}'),n={name:"其他/牛券项目简历.md"};function a(i,t,_,p,d,g){return o(),e("div",null,[...t[0]||(t[0]=[r("",4)])])}const m=s(n,[["render",a]]);export{c as __pageData,m as default};

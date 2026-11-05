@@ -1,0 +1,1 @@
+import{_ as e,o as a,c as o,a2 as r}from"./chunks/framework.DYYBR_aZ.js";const f=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"其他/自学是门手艺.md","filePath":"其他/自学是门手艺.md"}'),p={name:"其他/自学是门手艺.md"};function n(_,t,i,c,s,l){return a(),o("div",null,[...t[0]||(t[0]=[r("",12)])])}const u=e(p,[["render",n]]);export{f as __pageData,u as default};
