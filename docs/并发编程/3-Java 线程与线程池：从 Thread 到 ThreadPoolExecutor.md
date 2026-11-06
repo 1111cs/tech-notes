@@ -14,7 +14,7 @@
 
 Java 可以通过 `Thread` 类创建并启动一个线程。
 
-```
+```JAVA
 public class ThreadDemo {
 
     public static void main(String[] args) {
@@ -30,22 +30,6 @@ public class ThreadDemo {
 ```
 
 这里使用 Lambda 表达式提供任务逻辑。`Thread` 接收一个 `Runnable` 任务，并通过 `start()` 启动新线程。
-
-需要区分 `start()` 和 `run()`：
-
-- `start()`：启动一个新线程，由 JVM 调度该线程执行任务。
-- `run()`：普通的方法调用。如果直接调用 `run()`，任务就在当前调用线程中执行，**不会因此启动新线程。**
-
-例如：
-
-```
-thread.start(); // 启动新线程
-thread.run();   // 普通方法调用
-```
-
-在实际开发中，如果只是偶尔执行一个简单的异步任务，直接创建线程可以理解其基本原理。但如果系统需要频繁执行大量任务，每次都创建新线程，就会产生较大的管理和资源开销。
-
-因此，通常需要进一步使用线程池。
 
 ## 三、为什么需要线程池？
 
@@ -77,9 +61,14 @@ ExecutorService executorService =
                 new LinkedBlockingQueue<>(100),
                 new ThreadPoolExecutor.AbortPolicy()
         );
+        
+        
+。        
 ```
 
-这段代码创建了一个线程池。这里使用的参数是演示配置，并不意味着所有项目都应该使用这组数值。
+这段代码创建了一个线程池。**创建了一个拥有“4个常驻工人”和“8个最多同时工作工人”的工厂，并且准备了一个只能放100件任务的排队区**
+
+这里使用的参数是演示配置，并不意味着所有项目都应该使用这组数值。
 
 `ThreadPoolExecutor` 的主要参数如下：
 
