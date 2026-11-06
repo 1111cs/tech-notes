@@ -316,7 +316,7 @@ CompletableFuture.supplyAsync(
 );
 ```
 
-**这里传入的 Lambda 实际上是：Supplier<List<SupplierPriceVO>>而不是 Runnable。**
+**这里传入的 Lambda 实际上是：Supplier<List&lt;SupplierPriceVO&gt;>而不是 Runnable。**
 
 为什么？因为 `supplyAsync()` 需要一个有返回值的任务。
 

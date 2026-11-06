@@ -12,6 +12,7 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: 'Java', link: '/java/' },
+      { text: '并发编程', link: '/并发编程/' },
       { text: 'MySQL', link: '/mysql/' },
       { text: 'Redis', link: '/redis/' },
       { text: 'LeetCode 上机题', link: '/leetcode上机题吧/' },
@@ -20,6 +21,21 @@ export default defineConfig({
     ],
 
     sidebar: {
+      '/并发编程/': [
+        {
+          text: '并发编程',
+          items: [
+            { text: '概览', link: '/并发编程/' },
+            { text: '2-Runnable和Thread的关系', link: '/并发编程/2-Runnable和Thread的关系' },
+            { text: '3-Java 线程与线程池：从 Thread 到 ThreadPoolExecutor', link: '/并发编程/3-Java 线程与线程池：从 Thread 到 ThreadPoolExecutor' },
+            { text: '4-Java 并发编程：为什么有了 Thread，还需要单线程线程池？', link: '/并发编程/4-Java 并发编程：为什么有了 Thread，还需要单线程线程池？' },
+            { text: '5-Lambda 表达式', link: '/并发编程/5-Lambda 表达式' },
+            { text: '6、CompletableFuture 异步编程：从 Supplier 到线程池', link: '/并发编程/6、CompletableFuture 异步编程：从 Supplier 到线程池' },
+            { text: 'Java Stream API 详解：从 map、filter 到 flatMap 与 collect', link: '/并发编程/Java Stream API 详解：从 map、filter 到 flatMap 与 collect' },
+            { text: '线程池简约知识', link: '/并发编程/线程池简约知识' }
+          ]
+        }
+      ],
       '/java/': [
         {
           text: 'Java',
@@ -28,8 +44,8 @@ export default defineConfig({
             { text: 'Java 数据类型', link: '/java/JAVA数据类型' },
             { text: 'Java 异常体系', link: '/java/java异常体系' },
             { text: 'Web 系统全链路', link: '/java/web系统全链路' },
-            { text: 'Java 线程与线程池', link: '/java/Java 线程与线程池：从 Thread 到 ThreadPoolExecutor' },
-            { text: '单线程线程池', link: '/java/Java 并发编程：为什么有了 Thread，还需要单线程线程池？' },
+            { text: 'Java 线程与线程池', link: '/并发编程/3-Java 线程与线程池：从 Thread 到 ThreadPoolExecutor' },
+            { text: '单线程线程池', link: '/并发编程/4-Java 并发编程：为什么有了 Thread，还需要单线程线程池？' },
             { text: 'Sort、forEach 与函数式编程', link: '/java/sort+foreach+java函数式编程' },
             { text: 'Spring Data Redis 常用操作', link: '/java/Spring Data Redis 常用操作：从 Java API 到 Redis 命令' },
             { text: 'Redis 分布式锁', link: '/java/Redis 分布式锁：从 SET NX EX 到 Redisson RLock' },

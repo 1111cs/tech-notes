@@ -20,6 +20,11 @@ features:
     details: 从基础语法到工程实践，循序渐进梳理 Java 知识体系。
     link: /java/
     linkText: 查看 Java 笔记
+  - icon: 🧵
+    title: 并发编程
+    details: 梳理线程与线程池、Lambda、CompletableFuture 和 Stream 的使用。
+    link: /并发编程/
+    linkText: 查看并发编程笔记
   - icon: 🗃️
     title: MySQL
     details: 围绕索引、事务、MVCC 与 SQL 优化，掌握数据库核心原理。

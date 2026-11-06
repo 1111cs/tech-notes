@@ -90,7 +90,7 @@ public static <U> CompletableFuture<U> supplyAsync(
 
 | 参数     | 类型        | 作用                   |
 | -------- | ----------- | ---------------------- |
-| supplier | Supplier<U> | 提供具体的任务执行逻辑 |
+| supplier | Supplier&lt;U&gt; | 提供具体的任务执行逻辑 |
 | executor | Executor    | 指定任务使用哪个执行器 |
 
 重点理解这两个参数的职责：
@@ -117,7 +117,7 @@ CompletableFuture<String> future =
 }
 ```
 
-实际上是对 Supplier<String> 的实现。
+实际上是对 Supplier&lt;String&gt; 的实现。
 
 它等价于：
 
@@ -149,7 +149,7 @@ public static CompletableFuture<Void> runAsync(
 
 | 方法          | 函数式接口  | 是否有返回值 | 适用场景                   |
 | ------------- | ----------- | ------------ | -------------------------- |
-| supplyAsync() | Supplier<T> | 有           | 异步查询、计算并返回结果   |
+| supplyAsync() | Supplier&lt;T&gt; | 有           | 异步查询、计算并返回结果   |
 | runAsync()    | Runnable    | 无           | 异步发送通知、执行日志操作 |
 
 例如：
@@ -469,7 +469,7 @@ Stream<List<SupplierPriceVO>>
 .flatMap(List::stream)
 ```
 
-因为每个分销商返回的都是一个 List，如果直接收集，最终会得到 List<List<SupplierPriceVO>>。
+因为每个分销商返回的都是一个 List，如果直接收集，最终会得到 List<List&lt;SupplierPriceVO&gt;>。
 
 flatMap() 会将这些 List 展开成一个统一的 Stream。
 

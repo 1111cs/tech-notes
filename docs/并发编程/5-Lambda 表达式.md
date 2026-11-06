@@ -114,7 +114,7 @@ Runnable task = () -> {
 
 适用于只需要执行某项操作，不需要返回结果的场景。
 
-### 2. Supplier<T>：无参数、有返回值
+### 2. Supplier&lt;T&gt;：无参数、有返回值
 
 ```
 @FunctionalInterface
@@ -143,7 +143,7 @@ Supplier 的特点：
 
 这也是后面 CompletableFuture.supplyAsync() 使用的函数式接口。
 
-### 3. Consumer<T>：有参数、无返回值
+### 3. Consumer&lt;T&gt;：有参数、无返回值
 
 ```
 @FunctionalInterface
@@ -166,7 +166,7 @@ consumer.accept("Java");
 
 适用于接收一个参数并执行操作，不需要返回结果的场景。
 
-### 4. Function<T,R>
+### 4. Function&lt;T,R&gt;
 
 ```
 @FunctionalInterface
@@ -195,9 +195,9 @@ Integer length = function.apply("Java");
 | 接口          | 抽象方法  | 参数 | 返回值 |
 | ------------- | --------- | ---- | ------ |
 | Runnable      | run()     | 无   | 无     |
-| Supplier<T>   | get()     | 无   | T      |
-| Consumer<T>   | accept(T) | T    | 无     |
-| Function<T,R> | apply(T)  | T    | R      |
+| Supplier&lt;T&gt;   | get()     | 无   | T      |
+| Consumer&lt;T&gt;   | accept(T) | T    | 无     |
+| Function&lt;T,R&gt; | apply(T)  | T    | R      |
 
 记忆方法：
 
