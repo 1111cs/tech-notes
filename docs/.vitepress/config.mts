@@ -17,6 +17,7 @@ export default defineConfig({
       { text: 'Redis', link: '/redis/' },
       { text: 'LeetCode 上机题', link: '/leetcode上机题吧/' },
       { text: '工具使用', link: '/tools/' },
+      { text: '英语阅读', link: '/英语阅读/' },
       { text: '其他', link: '/其他/' }
     ],
 
@@ -93,7 +94,21 @@ export default defineConfig({
             { text: 'Harness 与 Learn Claude Code', link: '/tools/harness和learn-claude-code项目' },
             { text: 'Postman 的使用', link: '/tools/Postman的使用' },
             { text: 'Git 的使用', link: '/tools/git的使用' },
+            { text: 'GitLab Merge Request 提交流程', link: '/tools/从本地开发到 GitLab Merge Request：一套规范、安全的 Git 提交流程' },
             { text: 'WPS 与 Windows 换行', link: '/tools/wps隐藏标记和win命令行换行' }
+          ]
+        }
+      ],
+      '/英语阅读/': [
+        {
+          text: '英语阅读',
+          items: [
+            { text: '概览', link: '/英语阅读/' },
+            { text: '2026 in LLMs (so far)：AI Agent 正在如何改变软件开发？', link: '/英语阅读/2026 in LLMs (so far)：AI Agent 正在如何改变软件开发？' },
+            { text: '4. 为什么叫 Deep Blue？', link: '/英语阅读/4. 为什么叫 Deep Blue？' },
+            { text: '外刊精读笔记：NVIDIA Announces CEO Transition', link: '/英语阅读/外刊精读笔记：NVIDIA Announces CEO Transition' },
+            { text: '外刊精读笔记：The Hackintosh Reborn... with AI', link: '/英语阅读/外刊精读笔记：The Hackintosh Reborn... with AI' },
+            { text: '菲律宾文化与日常生活交流笔记', link: '/英语阅读/菲律宾文化与日常生活交流笔记' }
           ]
         }
       ],

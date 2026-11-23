@@ -45,4 +45,9 @@ features:
     details: 收录 Git、Docker、IDE 与命令行等效率工具的实用指南。
     link: /tools/
     linkText: 打开工具箱
+  - icon: 📖
+    title: 英语阅读
+    details: 记录外刊精读、技术长文阅读与日常英语交流笔记。
+    link: /英语阅读/
+    linkText: 查看英语阅读笔记
 ---
