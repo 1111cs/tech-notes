@@ -7,3 +7,5 @@
 - [外刊精读笔记：NVIDIA Announces CEO Transition](./外刊精读笔记：NVIDIA%20Announces%20CEO%20Transition.md)
 - [外刊精读笔记：The Hackintosh Reborn... with AI](./外刊精读笔记：The%20Hackintosh%20Reborn...%20with%20AI.md)
 - [菲律宾文化与日常生活交流笔记](./菲律宾文化与日常生活交流笔记.md)
+- [26.11.26](./26.11.26.md)
+- [26.11.27](./26.11.27.md)

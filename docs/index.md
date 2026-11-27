@@ -50,4 +50,9 @@ features:
     details: 记录外刊精读、技术长文阅读与日常英语交流笔记。
     link: /英语阅读/
     linkText: 查看英语阅读笔记
+  - icon: 📝
+    title: 论文相关
+    details: 记录论文写作指令、规范与相关资料整理。
+    link: /论文相关/
+    linkText: 查看论文相关笔记
 ---

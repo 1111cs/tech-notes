@@ -18,6 +18,7 @@ export default defineConfig({
       { text: 'LeetCode 上机题', link: '/leetcode上机题吧/' },
       { text: '工具使用', link: '/tools/' },
       { text: '英语阅读', link: '/英语阅读/' },
+      { text: '论文相关', link: '/论文相关/' },
       { text: '其他', link: '/其他/' }
     ],
 
@@ -108,7 +109,18 @@ export default defineConfig({
             { text: '4. 为什么叫 Deep Blue？', link: '/英语阅读/4. 为什么叫 Deep Blue？' },
             { text: '外刊精读笔记：NVIDIA Announces CEO Transition', link: '/英语阅读/外刊精读笔记：NVIDIA Announces CEO Transition' },
             { text: '外刊精读笔记：The Hackintosh Reborn... with AI', link: '/英语阅读/外刊精读笔记：The Hackintosh Reborn... with AI' },
-            { text: '菲律宾文化与日常生活交流笔记', link: '/英语阅读/菲律宾文化与日常生活交流笔记' }
+            { text: '菲律宾文化与日常生活交流笔记', link: '/英语阅读/菲律宾文化与日常生活交流笔记' },
+            { text: '26.11.26', link: '/英语阅读/26.11.26' },
+            { text: '26.11.27', link: '/英语阅读/26.11.27' }
+          ]
+        }
+      ],
+      '/论文相关/': [
+        {
+          text: '论文相关',
+          items: [
+            { text: '概览', link: '/论文相关/' },
+            { text: '写作指令', link: '/论文相关/写作指令' }
           ]
         }
       ],
